@@ -11369,7 +11369,9 @@ public abstract class DataDictionaryImpl extends BaseDataDictionary{
                         ti,
                         null,
                         null,
-                        false);
+                        false,
+                        TransactionController.ISOLATION_REPEATABLE_READ,
+                        getTransactionCompile());
 
         return sd;
     }

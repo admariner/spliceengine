@@ -208,8 +208,8 @@ public class ProcedureUnitTest {
         // note: this value changes if you add new system procedures
         // this is here to help in refactoring methods, move them around
         // and be sure that there's still the same procedures afterwards
-        Assert.assertEquals(158, proc.stream().count());
-        Assert.assertEquals(-2146922843, proc.stream().map( procedure -> procedure.getName() ).sorted()
+        Assert.assertEquals(160, proc.stream().count());
+        Assert.assertEquals(597945114, proc.stream().map( procedure -> procedure.getName() ).sorted()
                 .map( s -> s.hashCode()).reduce(0, (subtotal, element) -> subtotal + element).longValue() );
     }
 
