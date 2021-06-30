@@ -273,6 +273,15 @@ public interface LanguageConnectionContext extends Context {
     boolean isVisibleToCurrentSession(TableDescriptor td) throws StandardException;
 
     /**
+     * Return the creating session ID of a local temporary table
+     *
+     * @param td TableDescriptor of a local temporary table
+     * @return The creating session ID of this local temporary table
+     * @throws StandardException
+     */
+    java.util.UUID getLocalTempTableSessionID(TableDescriptor td) throws StandardException;
+
+    /**
      * Get table descriptor for the declared global temporary table from the list of temporary
      * tables known by this connection.
      * @param tableName Get table descriptor for the passed table name
