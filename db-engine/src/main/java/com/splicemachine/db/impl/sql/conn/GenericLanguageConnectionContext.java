@@ -861,6 +861,15 @@ public class GenericLanguageConnectionContext extends ContextImpl implements Lan
         if (td.getTableType() != TableDescriptor.LOCAL_TEMPORARY_TABLE_TYPE)
             return true;
 
+        return getSessionID().equals(getLocalTempTableSessionID(td));
+    }
+
+    @Override
+    public java.util.UUID getLocalTempTableSessionID(TableDescriptor td) throws StandardException {
+        if (td == null || td.getTableType() != TableDescriptor.LOCAL_TEMPORARY_TABLE_TYPE) {
+            return null;
+        }
+
         String tableName = td.getName();
         int lastIdx = tableName.lastIndexOf(LOCAL_TEMP_TABLE_SUFFIX_FIX_PART_CHAR);
         if (lastIdx < LOCAL_TEMP_TABLE_SUFFIX_FIX_PART_NUM_CHAR || lastIdx >= tableName.length() - 1)  // -1 case included
@@ -870,7 +879,7 @@ public class GenericLanguageConnectionContext extends ContextImpl implements Lan
                 throw StandardException.newException(SQLState.LANG_INVALID_INTERNAL_TEMP_TABLE_NAME, tableName);
         }
         try {
-            return java.util.UUID.fromString(tableName.substring(lastIdx + 1)).equals(getSessionID());
+            return java.util.UUID.fromString(tableName.substring(lastIdx + 1));
         } catch (IllegalArgumentException e) {
             throw StandardException.newException(SQLState.LANG_INVALID_INTERNAL_TEMP_TABLE_NAME, tableName);
         }
@@ -1139,7 +1148,7 @@ public class GenericLanguageConnectionContext extends ContextImpl implements Lan
      * Note: I'm assuming, because this class extends BaseActivation, it will properly serialize and
      * work across region servers.
      */
-    private static class DropTableActivation extends BaseActivation {
+    public static class DropTableActivation extends BaseActivation {
 
         public DropTableActivation(LanguageConnectionContext lcc, TableDescriptor td) throws StandardException {
             // Just pass the only pertinent info to BaseActivation
